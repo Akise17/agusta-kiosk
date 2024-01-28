@@ -231,12 +231,12 @@ class SettingsFrame(tk.Frame):
     def __init__(self, parent, controller, **kwargs):
         tk.Frame.__init__(self, parent, bg="white")
 
+        button_font = ("Arial", int(WIDTH * 0.02))
         # Display the serial number
-        self.serial_label = tk.Label(self, text=f"Serial Number: {getMachine_addr()}", font=LARGEFONT, bg="white", fg="black")
+        self.serial_label = tk.Label(self, text=f"Serial Number: {getMachine_addr()}", font=button_font, bg="white", fg="black")
         self.serial_label.pack(side=tk.TOP)
 
         # Create Back button
-        button_font = ("Arial", int(WIDTH * 0.02))
         back_button_width = int(WIDTH * 0.3)
         
         button_back_size = int(back_button_width // 3)
