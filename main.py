@@ -10,6 +10,8 @@ from check_serial_number import getMachine_addr
 import configparser
 
 LARGEFONT =("Verdana", 35)
+WIDTH = 480
+HEIGHT = 320
   
 class tkinterApp(tk.Tk):
     # __init__ function for class tkinterApp 
@@ -18,6 +20,7 @@ class tkinterApp(tk.Tk):
         # __init__ function for class Tk
         tk.Tk.__init__(self, *args, **kwargs)
         self.attributes("-fullscreen", True)
+        self.geometry(f"{WIDTH}x{HEIGHT}")
 
         # creating a container
         container = tk.Frame(self)  
