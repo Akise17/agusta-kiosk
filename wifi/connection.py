@@ -31,11 +31,11 @@ def get_wifi_networks():
     # Run the airport command to scan for Wi-Fi networks
     if current_os == "Darwin":
       output = subprocess.check_output(["/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport", "-s"])
+      output = output.decode("utf-8").splitlines()
     elif current_os == "Linux":
-      output = subprocess.check_output(["iwlist", "wlan0", "scan"])
-
-    # Decode the output and split it into lines
-    output = output.decode("utf-8").splitlines()
+      output = subprocess.check_output(["nmcli", "--fields", "SSID", "device", "wifi"])
+      output = output.decode("utf-8").splitlines()
+      output.pop(0)
 
     # Extract Wi-Fi network names
     wifi_networks = []
