@@ -4,7 +4,8 @@ def getMachine_addr():
 	if "Windows" in os_type:
 		command = "wmic bios get serialnumber"
 	elif "Linux" in os_type:
-		serialnumber = "cat /sys/firmware/devicetree/base/serial-number"
+		command = "cat /sys/firmware/devicetree/base/serial-number"
+		serialnumber = os.popen(command).read().replace("\n","").replace("	","").replace(" ","")
 	elif "Darwin" in os_type:
 		command = "ioreg -l | grep IOPlatformSerialNumber"
 		command = os.popen(command).read().replace("\n","").replace("	","").replace(" ","")
