@@ -87,11 +87,11 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent, bg="white")
 
-        button_width = int(self.winfo_screenwidth() * 0.3)
+        button_width = int(WIDTH * 0.3)
         button_height = button_width
-        button_font = ("Arial", int(self.winfo_screenwidth() * 0.04))
+        button_font = ("Arial", int(WIDTH * 0.04))
 
-        padding = int(self.winfo_screenwidth() * 0.05)
+        padding = int(WIDTH * 0.05)
         padding_y = int((self.winfo_screenheight() - button_height) * 0.5)
 
         image_size = int(button_height * 0.75)
@@ -143,11 +143,11 @@ class SelectMachineFrame(tk.Frame):
         self.kwargs = kwargs
         
         # Calculate button size based on screen width
-        button_width = int(self.winfo_screenwidth() * 0.3)
+        button_width = int(WIDTH * 0.3)
         button_height = button_width
-        button_font = ("Arial", int(self.winfo_screenwidth() * 0.04))
+        button_font = ("Arial", int(WIDTH * 0.04))
 
-        padding = int(self.winfo_screenwidth() * 0.05)
+        padding = int(WIDTH * 0.05)
         padding_y = int((self.winfo_screenheight() - button_height) * 0.5)
 
         image_size = int(button_height * 0.75)
@@ -190,11 +190,11 @@ class SelectTimeFrame(tk.Frame):
         self.product_list = []
         
         # Calculate button size based on screen width
-        button_width = int(self.winfo_screenwidth() * 0.1) // 10
+        button_width = int(WIDTH * 0.1) // 10
         button_height = button_width
-        button_font = ("Arial", int(self.winfo_screenwidth() * 0.02))
+        button_font = ("Arial", int(WIDTH * 0.02))
 
-        padding = int(self.winfo_screenwidth() * 0.06)
+        padding = int(WIDTH * 0.06)
         padding_y = int((self.winfo_screenheight() - button_height) * 0.2)
 
         # Create Product List button
@@ -203,7 +203,7 @@ class SelectTimeFrame(tk.Frame):
             self.washer_button.pack(side=tk.LEFT ,padx=padding, pady=padding_y)
 
         # Create Back button
-        back_button_width = int(self.winfo_screenwidth() * 0.3)
+        back_button_width = int(WIDTH * 0.3)
         
         button_back_size = int(back_button_width // 3)
         back_image_size = button_back_size
@@ -236,8 +236,8 @@ class SettingsFrame(tk.Frame):
         self.serial_label.pack(side=tk.TOP)
 
         # Create Back button
-        button_font = ("Arial", int(self.winfo_screenwidth() * 0.02))
-        back_button_width = int(self.winfo_screenwidth() * 0.3)
+        button_font = ("Arial", int(WIDTH * 0.02))
+        back_button_width = int(WIDTH * 0.3)
         
         button_back_size = int(back_button_width // 3)
         back_image_size = button_back_size
