@@ -54,7 +54,7 @@ class tkinterApp(tk.Tk):
   
 class StartPage(tk.Frame):
     def __init__(self, parent, controller): 
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, bg="white")
 
         button_width = int(self.winfo_screenwidth() * 0.3)
         button_height = button_width
@@ -88,13 +88,13 @@ class StartPage(tk.Frame):
         setting_img = setting_img.resize((setting_image_size, setting_image_size))
         setting_icon= ImageTk.PhotoImage(setting_img)
         wifi_font = ("Arial", int(button_width * 0.04))
-        self.connect_wifi_screen_button = tk.Button(self, text="", width=button_setting_size, height=button_setting_size, image=setting_icon, border=0)
+        self.connect_wifi_screen_button = tk.Button(self, text="", width=button_setting_size, height=button_setting_size, image=setting_icon, border=0, bg="white", highlightthickness=0)
         self.connect_wifi_screen_button.image = setting_icon
         self.connect_wifi_screen_button.place(relx=1, x=-10, y=10, anchor="ne")
         
 class SelectMachineFrame(tk.Frame):
     def __init__(self, parent, controller, is_member=False):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, bg="white")
         
         # Calculate button size based on screen width
         button_width = int(self.winfo_screenwidth() * 0.3)
@@ -128,7 +128,7 @@ class SelectMachineFrame(tk.Frame):
         back_img = Image.open(os.path.join(ASSETS_DIR, "back.png"))
         back_img = back_img.resize((back_image_size, back_image_size))
         back_icon= ImageTk.PhotoImage(back_img)
-        self.back_button = tk.Button(self, text="", width=button_back_size, height=button_back_size, image=back_icon, font=button_font, command=lambda : controller.show_frame(StartPage), border=0)
+        self.back_button = tk.Button(self, text="", width=button_back_size, height=button_back_size, image=back_icon, font=button_font, command=lambda : controller.show_frame(StartPage), border=0, bg="white", highlightthickness=0)
         self.back_button.image = back_icon
         self.back_button.place(relx=1, x=-10, y=10, anchor="ne")
 
