@@ -52,7 +52,7 @@ regular_button.image = regular_icon
 regular_button.pack(side=tk.RIGHT ,padx=padding, pady=padding_y)
 
 # Create button to open Setting screen
-button_setting_size = int(button_width // 10)
+button_setting_size = int(button_width // 5)
 setting_image_size = button_setting_size
 setting_img = Image.open(os.path.join(ASSETS_DIR, "setting.png"))
 setting_img = setting_img.resize((setting_image_size, setting_image_size))
