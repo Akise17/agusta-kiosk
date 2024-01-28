@@ -29,7 +29,6 @@ screen_height = root.winfo_screenheight()
 root.config(width=screen_width, height=screen_height)
 
 button_frame = tk.Frame(root, bg="white")
-button_frame.grid(row=0, column=0, sticky="nsew")
 button_frame.pack(side=tk.TOP)
 
 button_width = int(root.winfo_screenwidth() * 0.3)
