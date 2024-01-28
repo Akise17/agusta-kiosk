@@ -28,7 +28,7 @@ button_frame = tk.Frame(root, bg="white")
 button_frame.grid(row=0, column=0, sticky="nsew")
 # button_frame.pack(side=tk.TOP)
 
-button_width = int(root.winfo_screenwidth() * 0.4)
+button_width = int(root.winfo_screenwidth() * 0.3)
 button_height = button_width
 button_font = ("Arial", int(root.winfo_screenwidth() * 0.04))
 image_size = int(button_height * 0.75)
@@ -65,4 +65,7 @@ connect_wifi_screen_button.place(relx=1, x=-10, y=10, anchor="ne")
 # Bind the Escape key to close the window
 root.bind("<Escape>", close_window)
 
-root.mainloop()
+try:
+  root.mainloop()
+except KeyboardInterrupt:
+  close_window()
