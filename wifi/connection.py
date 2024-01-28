@@ -26,9 +26,13 @@ def get_current_wifi():
     return "Failed to retrieve current Wi-Fi network"
 
 def get_wifi_networks():
+  current_os = platform.system()
   try:
     # Run the airport command to scan for Wi-Fi networks
-    output = subprocess.check_output(["/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport", "-s"])
+    if current_os == "Darwin":
+      output = subprocess.check_output(["/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport", "-s"])
+    elif current_os == "Linux":
+      output = subprocess.check_output(["iwlist", "wlan0", "scan"])
 
     # Decode the output and split it into lines
     output = output.decode("utf-8").splitlines()
