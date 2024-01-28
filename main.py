@@ -94,7 +94,7 @@ class StartPage(tk.Frame):
         padding = int(WIDTH * 0.05)
         padding_y = int((self.winfo_screenheight() - button_height) * 0.5)
 
-        image_size = int(button_height * 0.75)
+        image_size = int(button_height * 0.65)
   
         # Create Member button
         member_img = Image.open(os.path.join(ASSETS_DIR, "member.png"))
@@ -150,7 +150,7 @@ class SelectMachineFrame(tk.Frame):
         padding = int(WIDTH * 0.05)
         padding_y = int((self.winfo_screenheight() - button_height) * 0.5)
 
-        image_size = int(button_height * 0.75)
+        image_size = int(button_height * 0.65)
 
         # Create Washer button
         washer_img = Image.open(os.path.join(ASSETS_DIR, "ic_washer.png"))
