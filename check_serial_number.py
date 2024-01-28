@@ -3,6 +3,7 @@ def getMachine_addr():
 	os_type = platform.system()
 	if "Windows" in os_type:
 		command = "wmic bios get serialnumber"
+		serialnumber = os.popen(command).read().replace("\n","").replace("	","").replace(" ","")
 	elif "Linux" in os_type:
 		command = "cat /sys/firmware/devicetree/base/serial-number"
 		serialnumber = os.popen(command).read().replace("\n","").replace("	","").replace(" ","")
@@ -14,5 +15,3 @@ def getMachine_addr():
 		serialnumber = command[-1]
 
 	return serialnumber
-
-print(getMachine_addr())

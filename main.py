@@ -6,13 +6,15 @@ import os
 from config import ASSETS_DIR
 from PIL import Image,ImageTk
 import requests
+from check_serial_number import getMachine_addr
+import configparser
 
 LARGEFONT =("Verdana", 35)
   
 class tkinterApp(tk.Tk):
     # __init__ function for class tkinterApp 
     def __init__(self, *args, **kwargs): 
-         
+        # self.serial_number = self.load_or_create_config('app_config')['General']['serial_number']
         # __init__ function for class Tk
         tk.Tk.__init__(self, *args, **kwargs)
         self.attributes("-fullscreen", True)
@@ -29,7 +31,7 @@ class tkinterApp(tk.Tk):
   
         # iterating through a tuple consisting
         # of the different page layouts
-        for F in (StartPage, SelectMachineFrame, SelectTimeFrame):
+        for F in (StartPage, SelectMachineFrame, SelectTimeFrame, SettingsFrame):
   
             frame = F(container, self)
   
@@ -47,11 +49,33 @@ class tkinterApp(tk.Tk):
     # to display the current frame passed as
     def show_frame(self, cont, **kwargs):
         frame = self.frames[cont]
-        frame.load_arguments(**kwargs)
+        if kwargs:
+            frame.load_arguments(**kwargs)
         frame.tkraise()
 
     def close_window(self, event=None):
         self.destroy()
+
+    def load_or_create_config(self, file_path):
+        config = configparser.ConfigParser()
+
+        # Check if the configuration file exists
+        if os.path.exists(file_path):
+            # Load the configuration from the file
+            config.read(file_path)
+            print("Configuration file loaded successfully.")
+        else:
+            # Create a new configuration
+            print("Configuration file not found. Creating a new one.")
+            config['General'] = {'serial_number': getMachine_addr()}
+
+            # Write the configuration to the file
+            with open(file_path, 'w') as config_file:
+                config.write(config_file)
+            config.read(file_path)
+            print("New configuration file created.")
+
+        return config
   
 class StartPage(tk.Frame):
     def load_arguments(self, **kwargs):
@@ -93,7 +117,8 @@ class StartPage(tk.Frame):
         setting_img = Image.open(os.path.join(ASSETS_DIR, "setting.png"))
         setting_img = setting_img.resize((setting_image_size, setting_image_size))
         setting_icon= ImageTk.PhotoImage(setting_img)
-        self.connect_wifi_screen_button = tk.Button(self, text="", width=button_setting_size, height=button_setting_size, image=setting_icon, border=0, bg="white", highlightthickness=0)
+        self.connect_wifi_screen_button = tk.Button(self, text="", width=button_setting_size, height=button_setting_size, image=setting_icon,
+                                                    border=0, bg="white", highlightthickness=0, command = lambda : controller.show_frame(SettingsFrame))
         self.connect_wifi_screen_button.image = setting_icon
         self.connect_wifi_screen_button.place(relx=1, x=-10, y=10, anchor="ne")
         
@@ -198,6 +223,27 @@ class SelectTimeFrame(tk.Frame):
         except requests.exceptions.RequestException as e:
             # Handle exceptions
             print("Error:", e)
+
+class SettingsFrame(tk.Frame):
+    def __init__(self, parent, controller, **kwargs):
+        tk.Frame.__init__(self, parent, bg="white")
+
+        # Display the serial number
+        self.serial_label = tk.Label(self, text=f"Serial Number: {getMachine_addr()}", font=LARGEFONT, bg="white", fg="black")
+        self.serial_label.pack(side=tk.TOP)
+
+        # Create Back button
+        button_font = ("Arial", int(self.winfo_screenwidth() * 0.02))
+        back_button_width = int(self.winfo_screenwidth() * 0.3)
+        
+        button_back_size = int(back_button_width // 3)
+        back_image_size = button_back_size
+        back_img = Image.open(os.path.join(ASSETS_DIR, "back.png"))
+        back_img = back_img.resize((back_image_size, back_image_size))
+        back_icon= ImageTk.PhotoImage(back_img)
+        self.back_button = tk.Button(self, text="", width=button_back_size, height=button_back_size, image=back_icon, font=button_font, command=lambda : controller.show_frame(StartPage), border=0, bg="white", highlightthickness=0)
+        self.back_button.image = back_icon
+        self.back_button.place(relx=1, x=-10, y=10, anchor="ne")
 
 # Driver Code
 app = tkinterApp()
