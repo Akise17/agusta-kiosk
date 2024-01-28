@@ -234,7 +234,7 @@ class SettingsFrame(tk.Frame):
 
         button_font = ("Arial", int(WIDTH * 0.02))
         # Display the serial number
-        self.serial_label = tk.Label(self, text=f"Serial Number: {getMachine_addr()}", font=button_font, bg="white", fg="black")
+        self.serial_label = tk.Label(self, text=f"Machine ID: {getMachine_addr()}", font=button_font, bg="white", fg="black")
         self.serial_label.pack(side=tk.TOP)
 
         # Example: Wi-Fi listbox
