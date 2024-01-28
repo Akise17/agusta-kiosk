@@ -1,12 +1,13 @@
 
 import tkinter as tk
-from tkinter import ttk
+from tkinter import messagebox
 from wifi.screen import open_wifi_screen
 import os
 from config import ASSETS_DIR
 from PIL import Image,ImageTk
 import requests
 from check_serial_number import getMachine_addr
+from wifi.connection import get_wifi_networks, get_current_wifi
 import configparser
 
 LARGEFONT =("Verdana", 35)
@@ -235,6 +236,24 @@ class SettingsFrame(tk.Frame):
         # Display the serial number
         self.serial_label = tk.Label(self, text=f"Serial Number: {getMachine_addr()}", font=button_font, bg="white", fg="black")
         self.serial_label.pack(side=tk.TOP)
+
+        # Example: Wi-Fi listbox
+        wifi_networks = get_wifi_networks()
+        if wifi_networks:
+            # Define a custom font
+            # Create a Listbox with custom font and increased spacing
+            wifi_list = tk.Listbox(self, selectbackground="lightblue", selectforeground="black", bd=0, highlightthickness=0, relief=tk.FLAT, font=button_font, justify=tk.CENTER)
+            for network in wifi_networks:
+                wifi_list.insert(tk.END, network)
+            wifi_list.pack(padx=10, pady=5, ipadx=10, ipady=5)  # Increase internal padding
+        else:
+            # Display an error message if Wi-Fi networks retrieval fails
+            error_label = tk.Label(self, text="Failed to retrieve Wi-Fi networks.")
+            error_label.pack(padx=10, pady=5)
+
+        # Example: Connect button
+        connect_button = tk.Button(self, text="Connect", command=lambda: messagebox.showinfo("Connected", f"Connected to {wifi_list.get(tk.ACTIVE)}"))
+        connect_button.pack(pady=10)
 
         # Create Back button
         back_button_width = int(WIDTH * 0.3)
