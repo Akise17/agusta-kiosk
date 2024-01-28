@@ -12,13 +12,13 @@ def member_button_clicked():
   # Open select machine frame for members
   print("member_button_clicked")
   select_machine_frame = SelectMachineFrame(root, is_member=True)
-  select_machine_frame.grid(row=1, column=0, sticky="nsew")
+  # select_machine_frame.grid(row=1, column=0, sticky="nsew")
 
 def regular_button_clicked():
   # Open select machine frame for regular users
   print("regular_button_clicked")
   select_machine_frame = SelectMachineFrame(root, is_member=False)
-  select_machine_frame.grid(row=1, column=0, sticky="nsew")
+  # select_machine_frame.grid(row=1, column=0, sticky="nsew")
 
 root = tk.Tk()
 root.configure(bg="white")
