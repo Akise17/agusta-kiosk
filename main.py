@@ -5,6 +5,7 @@ from wifi.screen import open_wifi_screen
 import os
 from config import ASSETS_DIR
 from PIL import Image,ImageTk
+import requests
 
 LARGEFONT =("Verdana", 35)
   
@@ -28,7 +29,7 @@ class tkinterApp(tk.Tk):
   
         # iterating through a tuple consisting
         # of the different page layouts
-        for F in (StartPage, SelectMachineFrame):
+        for F in (StartPage, SelectMachineFrame, SelectTimeFrame):
   
             frame = F(container, self)
   
@@ -44,15 +45,18 @@ class tkinterApp(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.close_window)
   
     # to display the current frame passed as
-    # parameter
-    def show_frame(self, cont):
+    def show_frame(self, cont, **kwargs):
         frame = self.frames[cont]
+        frame.load_arguments(**kwargs)
         frame.tkraise()
 
     def close_window(self, event=None):
         self.destroy()
   
 class StartPage(tk.Frame):
+    def load_arguments(self, **kwargs):
+        self.kwargs = kwargs
+    
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent, bg="white")
 
@@ -69,7 +73,8 @@ class StartPage(tk.Frame):
         member_img = Image.open(os.path.join(ASSETS_DIR, "member.png"))
         member_img = member_img.resize((image_size, image_size))
         member_icon= ImageTk.PhotoImage(member_img)
-        member_button = tk.Button(self, text="Member", compound="top", width=button_width, height=button_width, image=member_icon, font=button_font, command = lambda : controller.show_frame(SelectMachineFrame))
+        member_button = tk.Button(self, text="Member", compound="top", width=button_width, height=button_width, image=member_icon,
+                                  font=button_font, command = lambda : controller.show_frame(SelectMachineFrame, is_member=True))
         member_button.image = member_icon
         member_button.pack(side=tk.LEFT, padx=padding, pady=padding_y)
      
@@ -77,7 +82,8 @@ class StartPage(tk.Frame):
         regular_img = Image.open(os.path.join(ASSETS_DIR, "regular.png"))
         regular_img = regular_img.resize((image_size, image_size))
         regular_icon= ImageTk.PhotoImage(regular_img)
-        regular_button = tk.Button(self, text="Regular", compound="top", width=button_width, height=button_width, image=regular_icon, font=button_font, command = lambda : controller.show_frame(SelectMachineFrame))
+        regular_button = tk.Button(self, text="Regular", compound="top", width=button_width, height=button_width,
+                                   image=regular_icon, font=button_font, command = lambda : controller.show_frame(SelectMachineFrame, is_member=False))
         regular_button.image = regular_icon
         regular_button.pack(side=tk.RIGHT ,padx=padding, pady=padding_y)
 
@@ -87,14 +93,26 @@ class StartPage(tk.Frame):
         setting_img = Image.open(os.path.join(ASSETS_DIR, "setting.png"))
         setting_img = setting_img.resize((setting_image_size, setting_image_size))
         setting_icon= ImageTk.PhotoImage(setting_img)
-        wifi_font = ("Arial", int(button_width * 0.04))
         self.connect_wifi_screen_button = tk.Button(self, text="", width=button_setting_size, height=button_setting_size, image=setting_icon, border=0, bg="white", highlightthickness=0)
         self.connect_wifi_screen_button.image = setting_icon
         self.connect_wifi_screen_button.place(relx=1, x=-10, y=10, anchor="ne")
         
 class SelectMachineFrame(tk.Frame):
-    def __init__(self, parent, controller, is_member=False):
+    def load_arguments(self, **kwargs):
+        self.kwargs = kwargs
+        try:
+            if self.kwargs['is_member']:
+                self.dryer_button.config(state=tk.DISABLED)
+                print("Member Welcome")
+            else:
+                self.dryer_button.config(state=tk.NORMAL)
+        except:
+            pass
+
+    def __init__(self, parent, controller, **kwargs):
         tk.Frame.__init__(self, parent, bg="white")
+
+        self.kwargs = kwargs
         
         # Calculate button size based on screen width
         button_width = int(self.winfo_screenwidth() * 0.3)
@@ -110,7 +128,8 @@ class SelectMachineFrame(tk.Frame):
         washer_img = Image.open(os.path.join(ASSETS_DIR, "ic_washer.png"))
         washer_img = washer_img.resize((image_size, image_size))
         washer_icon= ImageTk.PhotoImage(washer_img)
-        self.washer_button = tk.Button(self, text="Washer", compound="top", width=button_width, height=button_height, image=washer_icon, font=button_font)
+        self.washer_button = tk.Button(self, text="Washer", compound="top", width=button_width, height=button_height, image=washer_icon,
+                                       font=button_font, command = lambda : controller.show_frame(SelectTimeFrame, is_member=False))
         self.washer_button.image = washer_icon
         self.washer_button.pack(side=tk.LEFT ,padx=padding, pady=padding_y)
 
@@ -132,7 +151,54 @@ class SelectMachineFrame(tk.Frame):
         self.back_button.image = back_icon
         self.back_button.place(relx=1, x=-10, y=10, anchor="ne")
 
-  
+class SelectTimeFrame(tk.Frame):
+    def load_arguments(self, **kwargs):
+        self.kwargs = kwargs
+    
+    def __init__(self, parent, controller, **kwargs):
+        tk.Frame.__init__(self, parent, bg="white")
+
+        self.kwargs = kwargs
+        self.product_list = []
+        
+        # Calculate button size based on screen width
+        button_width = int(self.winfo_screenwidth() * 0.1) // 10
+        button_height = button_width
+        button_font = ("Arial", int(self.winfo_screenwidth() * 0.02))
+
+        padding = int(self.winfo_screenwidth() * 0.06)
+        padding_y = int((self.winfo_screenheight() - button_height) * 0.2)
+
+        # Create Product List button
+        for product in self.product_list:
+            self.washer_button = tk.Button(self, text="Washer", compound="top", width=button_width, height=button_height, font=button_font)
+            self.washer_button.pack(side=tk.LEFT ,padx=padding, pady=padding_y)
+
+        # Create Back button
+        back_button_width = int(self.winfo_screenwidth() * 0.3)
+        
+        button_back_size = int(back_button_width // 3)
+        back_image_size = button_back_size
+        back_img = Image.open(os.path.join(ASSETS_DIR, "back.png"))
+        back_img = back_img.resize((back_image_size, back_image_size))
+        back_icon= ImageTk.PhotoImage(back_img)
+        self.back_button = tk.Button(self, text="", width=button_back_size, height=button_back_size, image=back_icon, font=button_font, command=lambda : controller.show_frame(SelectMachineFrame), border=0, bg="white", highlightthickness=0)
+        self.back_button.image = back_icon
+        self.back_button.place(relx=1, x=-10, y=10, anchor="ne")
+    
+    def call_api(self):
+        # Example API endpoint
+        api_url = "https://api.example.com/data"
+        
+        try:
+            response = requests.get(api_url)
+            data = response.json()
+            # Process the API response data
+            print(data)
+        except requests.exceptions.RequestException as e:
+            # Handle exceptions
+            print("Error:", e)
+
 # Driver Code
 app = tkinterApp()
 app.mainloop()
