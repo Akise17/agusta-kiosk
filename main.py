@@ -5,7 +5,7 @@ from wifi.screen import open_wifi_screen
 import os
 from config import ASSETS_DIR
 from PIL import Image,ImageTk
-import requests
+# import requests
 from check_serial_number import getMachine_addr
 from wifi.connection import get_wifi_networks, get_current_wifi
 import configparser
@@ -217,18 +217,18 @@ class SelectTimeFrame(tk.Frame):
         self.back_button.image = back_icon
         self.back_button.place(relx=1, x=-10, y=10, anchor="ne")
     
-    def call_api(self):
-        # Example API endpoint
-        api_url = "https://api.example.com/data"
+    # def call_api(self):
+    #     # Example API endpoint
+    #     api_url = "https://api.example.com/data"
         
-        try:
-            response = requests.get(api_url)
-            data = response.json()
-            # Process the API response data
-            print(data)
-        except requests.exceptions.RequestException as e:
-            # Handle exceptions
-            print("Error:", e)
+    #     try:
+    #         response = requests.get(api_url)
+    #         data = response.json()
+    #         # Process the API response data
+    #         print(data)
+    #     except requests.exceptions.RequestException as e:
+    #         # Handle exceptions
+    #         print("Error:", e)
 
 class SettingsFrame(tk.Frame):
     def __init__(self, parent, controller, **kwargs):
