@@ -24,6 +24,7 @@ class SerialCommand():
             if ser.is_open:
                 ser.close()
                 print("Serial port closed.")
+
 def on_message(client, userdata, message):
     print("Received message '" + str(message.payload) + "' on topic '"
           + message.topic + "' with QoS " + str(message.qos))
@@ -32,7 +33,7 @@ def on_message(client, userdata, message):
                 SerialCommand.send("run_dryer:60")
 
 # Set up MQTT client instance
-client = mqtt.Client()
+client = mqtt.Client(protocol=mqtt.MQTTv311)  # Specify MQTT protocol version
 
 # Set up callback function
 client.on_message = on_message
