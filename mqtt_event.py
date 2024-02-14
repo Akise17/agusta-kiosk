@@ -32,7 +32,7 @@ def on_message(client, userdata, message):
                 SerialCommand.send("run_dryer:60")
 
 # Set up MQTT client instance
-client = mqtt.Client(client.CallbackAPIVersion.VERSION1, "Agusta_DEV_001")
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, "Agusta_DEV_001")
 
 # Set up callback function
 client.on_message = on_message
